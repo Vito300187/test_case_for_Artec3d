@@ -28,4 +28,9 @@ module MethodsStatus
       puts 'Failed to send email, please check settings in method send_mail_error'
     end
   end
+
+  # Method to clear the screen from regular notifications
+  # def cls
+  #   system 'clear' or system 'cls'
+  # end
 end
