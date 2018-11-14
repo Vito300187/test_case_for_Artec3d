@@ -1,5 +1,8 @@
 require './methods_status'
+require './send_mail'
 require 'httparty'
+require 'pony'
+
 ONE_MINUTE = 60
 STATUS_CODE = 200
 
@@ -26,7 +29,7 @@ class Monitoring
 
     elsif response.code != STATUS_CODE
       status_down_count += 1
-      status_error(response, status_down_count)
+      status_error(status_down_count)
     end
 
     # One minute simulation

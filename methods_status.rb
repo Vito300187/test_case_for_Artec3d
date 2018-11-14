@@ -1,23 +1,31 @@
-module MethodsStatus
-  def status_error(response, status_down_count)
-    if status_down_count == 3
-      puts "Site not active #{status_down_count} minutes."
-    elsif status_down_count == 10
-      puts "Site not active #{status_down_count} minutes."
-    elsif status_down_count == 50
-      puts "Site not active #{status_down_count} minutes."
-    elsif status_down_count == 100
-      puts "Site not active #{status_down_count} minutes."
-    elsif status_down_count == 500
-      puts "Site not active #{status_down_count} minutes."
-    end
+require './send_mail'
 
-    #send email
-    puts "Site response code - #{response.code}, Response status #{response.message}"
-    puts "Sent a notification about the failure of the site"
-  end
+THREE_MINUTES = 3
+TEN_MINUTES = 10
+FIFTY_MINUTES = 50
+HUNDRED_MINUTES = 100
+FIVE_HUNDRED_MINUTES = 500
+
+module MethodsStatus
+  extend Send
 
   def status_ok(response)
-    puts "The site works great, Site response code - #{response.code}, Response status #{response.message}"
+    puts "The site works great, site response code - #{response.code}, response status #{response.message}"
+  end
+
+  def status_error(status_down_count)
+    if status_down_count == THREE_MINUTES  || status_down_count == TEN_MINUTES  ||
+       status_down_count == FIFTY_MINUTES  || status_down_count == HUNDRED_MINUTES ||
+       status_down_count == FIVE_HUNDRED_MINUTES
+      check_sending_errors_mail
+    end
+  end
+
+  def check_sending_errors_mail
+    begin
+      sending_errors_mail
+    rescue
+      puts 'Failed to send email, please check settings in method send_mail_error'
+    end
   end
 end
